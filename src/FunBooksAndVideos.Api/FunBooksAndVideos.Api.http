@@ -1,0 +1,6 @@
+@FunBooksAndVideos.Api_HostAddress = http://localhost:5012
+
+GET {{FunBooksAndVideos.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

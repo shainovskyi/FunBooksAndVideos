@@ -39,6 +39,9 @@ ScaffoldingReadMe.txt
 # dotenv environment variables file
 .env
 
+# Visual Studio
+.vs/
+
 # Others
 ~$*
 *~
@@ -55,3 +58,6 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Serilog file sink output
+logs/
