@@ -9,5 +9,7 @@
     <Project Path="src/FunBooksAndVideos.Domain/FunBooksAndVideos.Domain.csproj" />
     <Project Path="src/FunBooksAndVideos.Infrastructure/FunBooksAndVideos.Infrastructure.csproj" />
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/tests/">
+    <Project Path="tests/FunBooksAndVideos.UnitTests/FunBooksAndVideos.UnitTests.csproj" />
+  </Folder>
 </Solution>
