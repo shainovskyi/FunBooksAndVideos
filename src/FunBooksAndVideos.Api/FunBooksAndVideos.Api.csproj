@@ -14,6 +14,9 @@
 
   <ItemGroup>
     <Content Update="serilog*.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Remove="logs\**" />
+    <Content Remove="logs\**" />
+    <Compile Remove="logs\**" />
   </ItemGroup>
 
   <ItemGroup>

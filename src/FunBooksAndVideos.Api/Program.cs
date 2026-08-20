@@ -1,5 +1,8 @@
+using System.Text.Json.Serialization;
+using FunBooksAndVideos.Api.Middleware;
 using FunBooksAndVideos.Application;
 using FunBooksAndVideos.Infrastructure;
+using FunBooksAndVideos.Infrastructure.Persistence;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,13 +13,15 @@ builder.Configuration
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services
     .AddApplication()
-    .AddInfrastructure();
+    .AddInfrastructure(builder.Configuration);
 
 builder.Host.UseSerilog((context, services, configuration) =>
 {
@@ -26,6 +31,10 @@ builder.Host.UseSerilog((context, services, configuration) =>
 });
 
 var app = builder.Build();
+
+await app.Services.GetRequiredService<DatabaseInitializer>().InitializeAsync();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -46,3 +55,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Exposes the implicit Program class to WebApplicationFactory in integration tests.
+public partial class Program { }

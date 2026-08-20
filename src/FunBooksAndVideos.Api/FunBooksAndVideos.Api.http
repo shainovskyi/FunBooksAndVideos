@@ -1,6 +1,70 @@
 @FunBooksAndVideos.Api_HostAddress = http://localhost:5012
 
-GET {{FunBooksAndVideos.Api_HostAddress}}/weatherforecast/
+### List all products (seeded at startup)
+GET {{FunBooksAndVideos.Api_HostAddress}}/api/products
 Accept: application/json
 
+### Get a product by id
+GET {{FunBooksAndVideos.Api_HostAddress}}/api/products/1
+Accept: application/json
+
+### Get a customer (incl. active memberships)
+GET {{FunBooksAndVideos.Api_HostAddress}}/api/customers/1
+Accept: application/json
+
+### Process the example purchase order from the task:
+### video "Comprehensive First Aid Training" + book "The Girl on the train" + Book Club Membership
+### Side effects: BR1 activates the membership, BR2 generates a shipping slip for the book only.
+POST {{FunBooksAndVideos.Api_HostAddress}}/api/purchase-orders
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "lineItems": [
+    { "productId": 3 },
+    { "productId": 1 },
+    { "membershipType": "BookClub" }
+  ]
+}
+
+### Get a purchase order by id
+GET {{FunBooksAndVideos.Api_HostAddress}}/api/purchase-orders/1
+Accept: application/json
+
+### Get the customer's shipping slips (BR2 result)
+GET {{FunBooksAndVideos.Api_HostAddress}}/api/customers/1/shipping-slips
+Accept: application/json
+
+### Membership-only order (no shipping slip expected)
+POST {{FunBooksAndVideos.Api_HostAddress}}/api/purchase-orders
+Content-Type: application/json
+
+{
+  "customerId": 2,
+  "lineItems": [
+    { "membershipType": "Premium" }
+  ]
+}
+
+### Validation error: empty order -> 400 ProblemDetails
+POST {{FunBooksAndVideos.Api_HostAddress}}/api/purchase-orders
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "lineItems": []
+}
+
+### Not found: unknown customer -> 404 ProblemDetails
+POST {{FunBooksAndVideos.Api_HostAddress}}/api/purchase-orders
+Content-Type: application/json
+
+{
+  "customerId": 999,
+  "lineItems": [
+    { "productId": 1 }
+  ]
+}
+
 ###
+

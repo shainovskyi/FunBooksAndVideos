@@ -1,14 +1,23 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FunBooksAndVideos.Application.Events;
+using FunBooksAndVideos.Application.Rules;
+using FunBooksAndVideos.Application.Services;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace FunBooksAndVideos.Application
+namespace FunBooksAndVideos.Application;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
-        {
-            // placeholder for application layer services registration
+        services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+        services.AddScoped<IDomainEventHandler<PurchaseOrderCreated>, MembershipActivationRule>();
+        services.AddScoped<IDomainEventHandler<PurchaseOrderCreated>, ShippingSlipRule>();
 
-            return services;
-        }
+        services.AddScoped<PurchaseOrderProcessor>();
+        services.AddScoped<PurchaseOrderService>();
+        services.AddScoped<ProductService>();
+        services.AddScoped<CustomerService>();
+
+        return services;
     }
 }

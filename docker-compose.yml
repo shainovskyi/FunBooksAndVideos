@@ -4,7 +4,8 @@ services:
     container_name: mssql
     environment:
       ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "P@ssw0rd"
+      # Local dev-only credential. Not used for anything beyond this ephemeral container.
+      MSSQL_SA_PASSWORD: "${SA_PASSWORD:-P@ssw0rd}"
       MSSQL_PID: "Developer"
     ports:
       - "1433:1433"
